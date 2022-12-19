@@ -9,13 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class MainActivity extends AppCompatActivity {
     private TextView TextField1, TextField2;
-    String TextFieldOne = "", TextFieldTwo = "", ex = "";
+    String TextFieldOne = "", TextFieldTwo = "", ButtonMS = "";
+    int index;
 
 
 
@@ -149,16 +151,71 @@ public class MainActivity extends AppCompatActivity {
         });
         ButtonDot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                TextFieldOne = TextFieldOne + ".";
+                    TextFieldOne = TextFieldOne + ".";
+                    TextField1.setText(TextFieldOne);
+
+            }
+        });
+        MS.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                ButtonMS = TextFieldOne;
+            }
+        });
+        MC.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                ButtonMS = "";
+            }
+        });
+        MR.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                TextFieldOne = TextFieldOne + ButtonMS;
                 TextField1.setText(TextFieldOne);
+
+            }
+        });
+        Mp.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                int one = Integer.parseInt (TextFieldOne.trim ());
+                int two = Integer.parseInt (ButtonMS.trim ());
+                int three = one + two;
+                ButtonMS = Integer.toString(three);
+            }
+        });
+        Mm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                int one = Integer.parseInt (TextFieldOne.trim ());
+                int two = Integer.parseInt (ButtonMS.trim ());
+                int three = one - two;
+                ButtonMS = Integer.toString(three);
             }
         });
         ButtonEquals.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Expression e = new ExpressionBuilder(TextFieldOne).build();
-                double Result = e.evaluate();
-                String ResultF = Double.toString(Result);
-                TextField2.setText(ResultF);
+                index = TextFieldOne.indexOf("/0");
+                if  (index != -1) {
+                    Toast.makeText(getApplicationContext(), "На ноль делить нелья", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (TextFieldOne.length() >= 1) {
+                    Expression e = new ExpressionBuilder(TextFieldOne).build();
+                    double Result = e.evaluate();
+                    String ResultF = Double.toString(Result);
+                    TextField2.setText(ResultF);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Пусто", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        Back.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if  (TextFieldOne.length() >= 1) {
+                    TextFieldOne = TextFieldOne.substring(0, TextFieldOne.length() - 1);
+                    TextField1.setText(TextFieldOne);
+                    }
+                else {
+                    Toast.makeText(getApplicationContext(), "Пусто", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
